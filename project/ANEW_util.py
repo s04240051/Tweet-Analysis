@@ -16,7 +16,7 @@ from nltk.stem.wordnet import WordNetLemmatizer
 lmtzr = WordNetLemmatizer()
 stops = set(stopwords.words("english"))
 #anew = "../lib/vad-nrc.csv"
-anew = "/home/hzhu/project/ANEW/SentimentAnalysis//lib/EnglishShortened.csv"
+anew = "./SentimentAnalysis/lib/EnglishShortened.csv"
 avg_V = 5.06    # average V from ANEW dict
 avg_A = 4.21
 avg_D = 5.18
