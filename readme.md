@@ -33,7 +33,7 @@ This section will describe the information about the columns used by the files i
 |pos|positive score (float) [0,1]|
 |compound|summarize the valence scores of each word in the lexicon (float) [-1,1]|
 |sentiment_class_vader|pos: compound>=0.05 neu: -0.05<compound<0.05 neg: compound<=-0.05|
-|**Readability score**|**Check this ![blog](https://www.geeksforgeeks.org/readability-index-pythonnlp/) and ![document](https://textacy.readthedocs.io/en/0.11.0/api_reference/text_stats.html#textacy.text_stats.readability.automated_readability_index)**
+|**Readability score**|**Check this ![blog](https://www.geeksforgeeks.org/readability-index-pythonnlp/) and ![document](https://textacy.readthedocs.io/en/0.11.0/api_reference/text_stats.html#textacy.text_stats.readability.automated_readability_index)**|
 |flesch_reading|Readability test used as a general-purpose standard in several languages (float)|
 |smog_index|estimates the number of years of education required to understand a tex (float)|
 |flesch_kincaid|Readability test used widely in education, whose value estimates the U.S. (float)|
