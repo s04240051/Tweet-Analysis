@@ -49,5 +49,8 @@ This section will describe the information about the columns used by the files i
 |# Words Found|Found_words out of all words|
 |Found_words|lemmatized word in ANEW|
 |Found Words|all lemmatize words based on pos-tag|
-
+|like_count|int|
+|quote_count|int|
+|reply_count|int|
+|retweet_count|int|
 

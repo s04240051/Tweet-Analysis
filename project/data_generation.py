@@ -51,8 +51,9 @@ class DATA_REBUILD:
         for id, indexes in tqdm(self.name_dict.items()):
 
             media_list, tweet_list = [], []
-            time, text = [], []
-
+            sub_info = defaultdict(list)
+            basic_cols = ["text", "created_at"]
+            public_cols = ["like_count", "quote_count", "reply_count", "retweet_count"]
             user_inf = self.get_user_inf(
                 id, self.tweets[list(indexes)[0]])
             out_name = f"{user_inf['username']}_{user_inf['name']}_{id}"
@@ -63,19 +64,21 @@ class DATA_REBUILD:
                 tweet_list.extend(sub_tweets['tweets'])
                 media_list.extend(
                     sub_tweets['media'] if 'media' in sub_tweets else [])
-                text.extend([sub_tweets['tweets'][i]['text']
-                            for i in range(len(sub_tweets['tweets']))])
-                time.extend([sub_tweets['tweets'][i]['created_at']
-                             for i in range(len(sub_tweets['tweets']))])
+                for col in basic_cols:
+                    sub_info[col].extend([sub_tweets['tweets'][i][col]
+                                for i in range(len(sub_tweets['tweets']))])
+                for col in public_cols:
+                    sub_info[col].extend([sub_tweets['tweets'][i]["public_metrics"][col]
+                                for i in range(len(sub_tweets['tweets']))])
             if self.save_fold is not None:
                 out_container = {
                     "user": user_inf,
                     "tweets": tweet_list,
                     "media": media_list,
                 }
-                self.save(out_container, zip(time, text), out_name)
+                self.save(out_container, sub_info, out_name)
 
-    def save(self, whole_data, time_text, out_name):
+    def save(self, whole_data, sub_info, out_name):
 
         whole_data_path, time_text_path = (
             os.path.join(self.wholedata_fold, out_name+'.json'),
@@ -84,10 +87,9 @@ class DATA_REBUILD:
         whole_data = json.dumps(whole_data, sort_keys=True, indent=0, separators=(',', ':'))
         with open(whole_data_path, "w") as f_w:
             f_w.write(whole_data)
-        with open(time_text_path, 'w', encoding="utf-8", newline="") as file:
-            writer = csv.writer(file)
-            for time, text in time_text:
-                writer.writerow([time, text])
+        sub_info = pd.DataFrame(sub_info)
+        sub_info.to_csv(time_text_path, index=False)
+        
 
     def get_user_inf(self, id, tweet):
         for u in tweet['includes']['users']:
@@ -182,12 +184,12 @@ class SENTIMENT:
             df.to_csv(out_path, index=False)
 
 if __name__ == "__main__":
-    '''
+    
     #better use argparse to control. Anyway, use this block to generate the dataset.
-    file_name = './emma/'
+    file_name = './emma'
     data_build = DATA_REBUILD(
         file_name=file_name,
-        source_file="emma_queries_13_23.json",
+        source_file="realDonaldTrump_tweets_01-08-2021.json",
         save_fold=('name_file', 'name_text'),
     )
     data_build.pipeline()
@@ -198,3 +200,4 @@ if __name__ == "__main__":
     candidators = ['Barack', 'Mitt', 'Hillary', 'Donald', 'Joe', 'POTUS']
     data_builder = SENTIMENT(dataset_folder, candidators)
     data_builder.data_pipeline(save_path=out_path, rewrite=False)
+    '''
